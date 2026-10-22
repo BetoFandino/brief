@@ -1,0 +1,11 @@
+name: pvc-unbound
+root_cause: PVC_UNBOUND
+severity: high
+objects: ["eval-pvc/PersistentVolumeClaim/data"]
+evidence:
+  storage_class: nonexistent-class-brief-eval
+# The pod is Pending, but the cause is the claim. Reporting the pod alone is the
+# failure mode this fixture exists to catch.
+budget_tokens: 4000
+max_tool_calls: 2
+kubectl_walk: [statefulset, pods, events, pvc, storageclass]

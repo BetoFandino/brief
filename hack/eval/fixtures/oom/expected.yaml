@@ -1,0 +1,14 @@
+# The root cause, known in advance. The eval measures two things: whether the
+# agent reaches this cause, and how many tokens it spent getting there.
+name: oom
+root_cause: CONTAINER_OOM_KILLED
+severity: critical
+objects: ["eval-oom/Deployment/memory-hog"]
+evidence:
+  exit_code: 137
+  limit_memory: 32Mi
+# The thesis: this answer costs one call inside the default budget, against the
+# 7-to-12 hop kubectl walk it replaces.
+budget_tokens: 4000
+max_tool_calls: 2
+kubectl_walk: [deployment, replicaset, pods, events, logs]

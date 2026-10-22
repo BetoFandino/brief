@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: eval-selector
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+  namespace: eval-selector
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: checkout }
+  template:
+    metadata:
+      labels: { app: checkout }
+    spec:
+      containers:
+        - name: app
+          image: registry.k8s.io/pause:3.9
+---
+# Selector says "checkut". Every pod is healthy, the Service has no endpoints,
+# and nothing anywhere reports an error. This is the fixture that argues for the
+# graph: no single object is broken, the edge is.
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout
+  namespace: eval-selector
+spec:
+  selector: { app: checkut }
+  ports:
+    - { port: 80, targetPort: 80 }

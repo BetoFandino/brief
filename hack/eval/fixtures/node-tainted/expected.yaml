@@ -1,0 +1,14 @@
+name: node-tainted
+root_cause: POD_UNSCHEDULABLE
+severity: high
+objects: ["eval-taint/Deployment/wants-db-node"]
+evidence:
+  failing_predicate: TaintToleration
+  rejecting_taint: node-role/db
+# Per-node counts, grouped by reason — "9 nodes on insufficient CPU, 3 on taint
+# node-role/db", not a single unhelpful sentence. Needs the real scheduler
+# framework, so this fixture's full answer belongs to v0.2.
+milestone: v0.2
+budget_tokens: 4000
+max_tool_calls: 2
+kubectl_walk: [deployment, pods, events, nodes, taints, allocatable]

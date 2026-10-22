@@ -1,0 +1,20 @@
+# Two nodes, one tainted, so the node-tainted fixture needs no `kubectl taint`.
+# The taint arrives through kubeadm at node registration, which keeps the taint
+# part of the fixture's declared state rather than a mutating side effect.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: brief-eval
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+    kubeadmConfigPatches:
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          taints:
+            - key: node-role/db
+              value: "true"
+              effect: NoSchedule
+          kubeletExtraArgs:
+            node-labels: "brief-eval/tainted=true"

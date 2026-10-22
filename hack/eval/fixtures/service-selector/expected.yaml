@@ -1,0 +1,12 @@
+name: service-selector
+root_cause: SERVICE_HAS_NO_ENDPOINTS
+severity: high
+objects: ["eval-selector/Service/checkout"]
+evidence:
+  selector: { app: checkut }
+  near_miss_label: { app: checkout }
+# Nothing is in an error state here, so an agent that only looks for failing
+# pods reports the cluster healthy. That wrong answer is the thing being tested.
+budget_tokens: 4000
+max_tool_calls: 2
+kubectl_walk: [service, endpointslice, pods, deployment, labels]

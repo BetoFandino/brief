@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: eval-image
+---
+# A tag that cannot exist. Distinguishing this from a credentials failure is the
+# point: both surface as ImagePullBackOff, and they have opposite remedies.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost-image
+  namespace: eval-image
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: ghost-image }
+  template:
+    metadata:
+      labels: { app: ghost-image }
+    spec:
+      containers:
+        - name: app
+          image: busybox:this-tag-does-not-exist-brief-eval

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: eval-taint
+---
+# Pinned to the tainted node without a matching toleration, so it stays
+# Unschedulable. The useful answer is not "no nodes available" but which
+# predicate rejected how many nodes, and why.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wants-db-node
+  namespace: eval-taint
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: wants-db-node }
+  template:
+    metadata:
+      labels: { app: wants-db-node }
+    spec:
+      nodeSelector:
+        brief-eval/tainted: "true"
+      containers:
+        - name: app
+          image: registry.k8s.io/pause:3.9

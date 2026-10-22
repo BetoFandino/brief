@@ -1,0 +1,13 @@
+# Build output
+/bin/
+/dist/
+/brief-server
+/kubectl-brief
+
+# Test and coverage artifacts
+*.test
+coverage.out
+coverage.html
+
+# Local overrides
+.claude/settings.local.json

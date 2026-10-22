@@ -1,0 +1,9 @@
+name: image-not-found
+root_cause: IMAGE_NOT_FOUND
+severity: high
+objects: ["eval-image/Deployment/ghost-image"]
+# Must NOT be reported as a credentials problem: the remedy is a different one.
+must_not_emit: [IMAGE_PULL_AUTH_FAILED]
+budget_tokens: 4000
+max_tool_calls: 2
+kubectl_walk: [deployment, replicaset, pods, events]
